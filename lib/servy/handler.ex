@@ -15,10 +15,20 @@ defmodule Servy.Handler do
     request
     |> parse
     |> rewrite_path()
-    |> log()
+    # |> log()
     |> route
     |> track()
     |> format_response
+  end
+
+  def route(%Conv{method: "GET", path: "/kaboom"} = conv) do
+    raise "Kaboom!"
+  end
+
+  def route(%Conv{method: "GET", path: "/hibernate/" <> time} = conv) do
+    time |> String.to_integer() |> :timer.sleep()
+
+    %{conv | status: 200, resp_body: "Awake!"}
   end
 
   def route(%Conv{method: "GET", path: "/wildthings"} = conv) do
