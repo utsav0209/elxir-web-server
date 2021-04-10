@@ -10,9 +10,12 @@ defmodule Servy.SensorServer do
 
   # Client Interface
 
-  def start do
-    IO.puts("Starting the sensor server...")
-    GenServer.start(__MODULE__, %State{}, name: @name)
+  def start_link(interval) do
+    IO.puts("Starting the sensor server with #{interval} min refresh...")
+
+    GenServer.start_link(__MODULE__, %State{refresh_interval: :timer.minutes(interval)},
+      name: @name
+    )
   end
 
   def get_sensor_data do
