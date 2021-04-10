@@ -36,19 +36,8 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/sensors"} = conv) do
-    # request handling process
-
-    parent = self()
-    task = Task.async(fn -> Servy.Tracker.get_location("bigfoot") end)
-
-    snapshots =
-      ["cam-1", "cam-2", "cam-3"]
-      |> Enum.map(&Task.async(fn -> VideoCam.get_snapshot(&1) end))
-      |> Enum.map(&Task.await/1)
-
-    where_is_bigfoot = Task.await(task)
-
-    render(conv, "sensors.eex", snapshots: snapshots, location: {where_is_bigfoot})
+    sensor_data = Servy.SensorServer.get_senesor_data()
+    render(conv, "sensors.eex", sensor_data)
   end
 
   def route(%Conv{method: "GET", path: "/kaboom"} = conv) do

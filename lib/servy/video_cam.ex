@@ -10,6 +10,6 @@ defmodule Servy.VideoCam do
     :timer.sleep(1000)
 
     # Example response returned from the API:
-    "#{camera_name}-snapshot.jpg"
+    "#{camera_name}--#{:rand.uniform(1000)}.jpg"
   end
 end
