@@ -31,7 +31,8 @@ defmodule Servy.KickStarter do
   end
 
   defp start_server do
+    port = Application.get_env(:servy, :port)
     IO.puts("Starting the HTTP server...")
-    spawn_link(Servy.HttpServer, :start, [4000])
+    spawn_link(Servy.HttpServer, :start, [port])
   end
 end
